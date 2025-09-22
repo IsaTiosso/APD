@@ -1,0 +1,134 @@
+1. Instalação
+
+Se ainda não tiver instalado:
+
+pip install pytest
+
+2. Estrutura dos arquivos de teste
+
+Os testes devem ficar em arquivos que começam com test_ ou terminam com _test.py.
+
+As funções de teste também devem começar com test_.
+
+Exemplo: arquivo test_calc.py 
+
+# código que queremos testar (calc.py)
+def soma(a, b):
+    return a + b
+
+# teste (test_calc.py)
+from calc import soma
+import pytest
+
+def test_soma():
+    assert soma(2, 3) == 5   # passa
+    assert soma(-1, 1) == 0  # passa
+    assert soma(10, 5) == 15 # passa
+
+3. Executando os testes
+
+No terminal, dentro da pasta do projeto, roda:
+
+pytest
+
+ou para ver mais detalhes:
+
+pytest -v
+
+
+
+
+### Estrutura geral de projeto com **pytest**
+
+```
+exemplo_algoritmo/
+ ├── algoritmo.py        # aqui ficam as funções/classe que você quer testar
+ ├── test_algoritmo.py   # aqui ficam os testes que usam as funções do arquivo acima
+ └── __pycache__/        # (ignora, gerado pelo Python)
+```
+
+
+🚍 Exercício 1 — Sistema de transporte com classes abstratas
+📂 Estrutura de arquivos
+
+transporte/
+ ├── transporte.py       # código principal (classes, lógica)
+ └── test_transporte.py  # testes com pytest
+
+📌 transporte.py
+from abc import ABC, abstractmethod
+
+class Transporte(ABC):
+    def __init__(self, capacidade: int):
+        if capacidade < 0:
+            raise ValueError("Capacidade não pode ser negativa")
+        self.capacidade = capacidade
+
+    @abstractmethod
+    def mover(self):
+        pass
+
+    def info(self):
+        return f"Capacidade: {self.capacidade}"
+
+class Carro(Transporte):
+    def mover(self):
+        return f"O carro está se movendo com até {self.capacidade} passageiros"
+
+class Bicicleta(Transporte):
+    def mover(self):
+        return f"A bicicleta está se movendo com até {self.capacidade} pessoas"
+
+
+if __name__ == "__main__":
+    transporte1 = Carro(5)
+    transporte2 = Bicicleta(2)
+
+    lista = [transporte1, transporte2]
+
+    for t in lista:
+        print(t.mover())
+        print(t.info())
+        
+
+🧪 Exercício 2 — Testes com pytest
+📌 test_transporte.py
+import pytest
+from transporte import Carro, Bicicleta
+
+def test_carro_capacidade():
+    carro = Carro(5)
+    assert carro.capacidade == 5
+
+def test_carro_mover():
+    carro = Carro(5)
+    assert carro.mover() == "O carro está se movendo com até 5 passageiros"
+
+def test_bicicleta_mover():
+    bike = Bicicleta(2)
+    assert bike.mover() == "A bicicleta está se movendo com até 2 pessoas"
+
+def test_carro_capacidade_negativa():
+    with pytest.raises(ValueError):
+        Carro(-3)   # deve gerar erro
+
+🚀 Rodando os testes
+
+No terminal, dentro da pasta transporte/:
+
+pytest -v
+
+
+Saída esperada:
+
+test_transporte.py::test_carro_capacidade PASSED
+test_transporte.py::test_carro_mover PASSED
+test_transporte.py::test_bicicleta_mover PASSED
+test_transporte.py::test_carro_capacidade_negativa PASSED
+
+
+✅ Assim você mantém organização:
+
+transporte.py → só código do sistema.
+
+test_transporte.py → só os testes.

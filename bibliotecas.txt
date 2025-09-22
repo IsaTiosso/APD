@@ -1,0 +1,10 @@
+# Importa funções específicas
+from math import sqrt, pi 
+
+
+
+import functools
+
+
+
+from abc import ABC, abstractmethod 

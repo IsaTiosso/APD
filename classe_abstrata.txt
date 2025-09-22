@@ -1,0 +1,26 @@
+Classe Abstrata – Tutorial Rápido
+
+Passo 1: Importar ABC
+from abc import ABC, abstractmethod
+
+Passo 2: Criar a classe abstrata
+class Animal(ABC):
+    @abstractmethod
+    def fazer_som(self):
+        pass
+
+Passo 3: Criar subclasses que implementam o método
+class Cachorro(Animal):
+    def fazer_som(self):
+        return "Au au!"
+
+class Gato(Animal):
+    def fazer_som(self):
+        return "Miau!"
+
+Passo 4: Usar
+dog = Cachorro()
+print(dog.fazer_som())  # Saída: Au au!
+
+cat = Gato()
+print(cat.fazer_som())  # Saída: Miau!
