@@ -1,10 +1,43 @@
-# Importa funções específicas
-from math import sqrt, pi 
+from functools import wraps 
+from numbers import Real 
+import math 
+
+def log_execucao(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        for arg in args:
+            if not isinstance(arg, Real) or arg < 0:
+                raise ValueError("Todos os argumentos devem ser numéricos positivos.")
+        return func(*args, **kwargs)
+    return wrapper
 
 
+Esse tipo de estrutura é usada quando você quer criar um decorator que:
 
-import functools
+-> Valida argumentos antes de executar a função (por exemplo, garantir que todos os argumentos sejam números reais positivos).
+
+-> Reutiliza lógica em várias funções, sem precisar repetir o código de validação em cada uma.
+
+-> Mantém o nome e docstring da função original usando @wraps(func).
+
+Exemplos de uso:
+
+- Validação de entrada: Funções matemáticas que só aceitam números positivos (como raiz quadrada, logaritmo, etc).
+- Autenticação: Verificar se o usuário está autenticado antes de executar uma função.
+- Logging: Registrar quando funções são chamadas.
 
 
+Você vai precisar usar uma biblioteca (importar módulos) quando:
 
-from abc import ABC, abstractmethod 
+-> Usa funções, classes ou tipos que não fazem parte do núcleo da linguagem Python (por exemplo, math.sqrt, datetime, os, functools.wraps).
+
+-> Precisa de funcionalidades específicas como manipulação de datas, operações matemáticas avançadas, acesso a arquivos, requisições HTTP, etc.
+
+-> Quer usar recursos de terceiros (por exemplo, pytest, pandas, requests).
+
+
+Exemplo de quando precisa importar:
+
+-> Se quiser preservar o nome e docstring da função original no decorator, use from functools import wraps e adicione @wraps(func) no wrapper.
+
+-> Se for usar funções matemáticas como raiz quadrada, importe import math.

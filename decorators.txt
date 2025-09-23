@@ -1,5 +1,49 @@
+Decorators em Python são funções que recebem outra função como argumento e retornam uma nova função, geralmente adicionando algum comportamento extra. Eles são muito usados para modificar ou estender o comportamento de funções sem alterar seu código original.
+
 from functools import wraps
 from numbers import Real
 import math 
 
+Decorators - Modelo 
 
+
+def meu_decorator(func):
+    def wrapper(*args, **kwargs):
+        # Código antes da função original
+        print("Antes da função")
+        resultado = func(*args, **kwargs)
+        # Código depois da função original
+        print("Depois da função")
+        return resultado
+    return wrapper
+
+@meu_decorator
+def minha_funcao():
+    print("Função original")
+
+minha_funcao() 
+
+@meu_decorator é uma forma de aplicar o decorator à função.
+O decorator pode executar código antes e depois da função original.
+O uso de *args e **kwargs permite que o decorator funcione com funções de qualquer assinatura.
+
+
+
+Implemente um decorator chamado log_execucao que imprime "Executando função..." antes da execução e "Execução concluída" depois.
+Use-o em uma função calcular_quadrado(n) que retorna n ** 2.
+
+def log_execucao(func):
+    def wrapper(*args, **kwargs):
+        print(f'Executando função: {func.__name__}...')
+        resultado = func(*args, **kwargs)
+        print(f'Execução concluída: {func.__name__}')
+        return resultado
+    return wrapper
+
+@log_execucao
+def calcular_quadrado(n):
+    return n ** 2 
+
+
+response = calcular_quadrado(3)
+print(f'Resultado: {response}')

@@ -1,4 +1,29 @@
-Classe Abstrata – Tutorial Rápido
+Uma classe abstrata em Python é uma classe que serve como modelo para outras classes, mas não pode ser instanciada diretamente. Ela define métodos que devem ser implementados pelas subclasses. Para criar classes abstratas, usamos o módulo abc com ABC e o decorador @abstractmethod.
+
+Classe Abstrata – Modelo 
+
+from abc import ABC, abstractmethod
+
+class MinhaClasseAbstrata(ABC):
+    @abstractmethod
+    def meu_metodo(self):
+        pass
+
+class MinhaClasseConcreta(MinhaClasseAbstrata):
+    def meu_metodo(self):
+        print("Implementação do método abstrato.")
+
+obj = MinhaClasseConcreta()
+obj.meu_metodo()
+
+ 
+ABC: Classe base para criar classes abstratas.
+@abstractmethod: Indica que o método deve ser implementado nas subclasses.
+Não é possível instanciar a classe abstrata diretamente.
+As subclasses devem implementar todos os métodos abstratos.
+
+
+EXEMPLO: 
 
 Passo 1: Importar ABC
 from abc import ABC, abstractmethod
@@ -24,3 +49,15 @@ print(dog.fazer_som())  # Saída: Au au!
 
 cat = Gato()
 print(cat.fazer_som())  # Saída: Miau!
+
+
+
+Você não precisa usar esse tipo de verificação (como if capacidade < 0: raise ValueError(...)) quando:
+
+-> Não faz sentido limitar o valor do atributo (por exemplo, se valores negativos forem válidos no seu contexto).
+
+class Transporte(ABC):
+    def __init__(self, capacidade):
+        if capacidade < 0:
+            raise ValueError("A capacidade não pode ser negativa.")
+        self.capacidade = capacidade 

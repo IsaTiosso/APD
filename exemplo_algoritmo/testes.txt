@@ -52,7 +52,7 @@ exemplo_algoritmo/
 📂 Estrutura de arquivos
 
 transporte/
- ├── transporte.py       # código principal (classes, lógica)
+ ├── transporte.py       # código principal (classes, lógica) # esse nome que vai ser importado no test 
  └── test_transporte.py  # testes com pytest
 
 📌 transporte.py
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 🧪 Exercício 2 — Testes com pytest
 📌 test_transporte.py
 import pytest
-from transporte import Carro, Bicicleta
+from transporte import Carro, Bicicleta 
 
 def test_carro_capacidade():
     carro = Carro(5)
