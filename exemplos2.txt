@@ -1,0 +1,152 @@
+Simulado de Python
+Exercício 1 – Sistema de Loja Virtual
+
+A loja “Doces & Cia” quer registrar diferentes tipos de produtos. Todo produto deve ter um método para mostrar o preço com desconto. Crie a estrutura necessária e um decorator que registre cada vez que o preço de um produto for acessado.
+
+Resposta:
+
+from abc import ABC, abstractmethod
+from functools import wraps
+
+# Decorator para logar acesso ao preço
+def log_acesso(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Acessando preço do produto: {args[0].nome}")
+        return func(*args, **kwargs)
+    return wrapper
+
+# Classe abstrata Produto
+class Produto(ABC):
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+    @abstractmethod
+    def preco_com_desconto(self):
+        pass
+
+# Produto específico
+class Chocolate(Produto):
+    @log_acesso
+    def preco_com_desconto(self):
+        return self.preco * 0.9
+
+# Testando
+choco = Chocolate("Chocolate ao Leite", 10)
+print(choco.preco_com_desconto())
+
+Exercício 2 – Café da Manhã Inteligente
+
+Um café quer um sistema que calcule o valor total do pedido de um cliente. Cada item do pedido deve ter um método para calcular o valor final. Depois, escreva um pytest simples que teste se a soma de dois itens está correta.
+
+Resposta:
+
+# Classes simples
+class Item:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+    def valor_final(self):
+        return self.preco
+
+# Soma do pedido
+def total_pedido(itens):
+    return sum(item.valor_final() for item in itens)
+
+# Teste pytest (salvar como test_cafe.py)
+def test_total_pedido():
+    itens = [Item("Pão", 2), Item("Café", 3)]
+    assert total_pedido(itens) == 5
+
+Exercício 3 – Biblioteca de Livros
+
+Uma biblioteca quer registrar empréstimos. Todos os tipos de usuários devem ter um método que informe se pode emprestar determinado livro. Crie uma estrutura de classes e use um decorator para avisar quando alguém tenta pegar um livro.
+
+Resposta:
+
+from abc import ABC, abstractmethod
+
+# Decorator de aviso
+def aviso_emprestimo(func):
+    def wrapper(*args, **kwargs):
+        print(f"{args[0].nome} está tentando pegar um livro!")
+        return func(*args, **kwargs)
+    return wrapper
+
+# Classe abstrata
+class Usuario(ABC):
+    def __init__(self, nome):
+        self.nome = nome
+
+    @abstractmethod
+    def pode_emprestar(self, livro):
+        pass
+
+class Estudante(Usuario):
+    @aviso_emprestimo
+    def pode_emprestar(self, livro):
+        return livro != "Livro restrito"
+
+# Testando
+usu = Estudante("Alice")
+print(usu.pode_emprestar("Matemática"))
+print(usu.pode_emprestar("Livro restrito"))
+
+Exercício 4 – Jogos de Pontuação
+
+Um jogo quer calcular pontos bônus para jogadores. A cada vez que um jogador completa uma fase, um decorator deve avisar quantos pontos ele ganhou.
+
+Resposta:
+
+# Decorator de pontos
+def aviso_pontos(func):
+    def wrapper(*args, **kwargs):
+        pontos = func(*args, **kwargs)
+        print(f"Você ganhou {pontos} pontos!")
+        return pontos
+    return wrapper
+
+class Jogador:
+    def __init__(self, nome):
+        self.nome = nome
+
+    @aviso_pontos
+    def completar_fase(self, fase):
+        return fase * 100
+
+# Testando
+j = Jogador("Bob")
+j.completar_fase(3)
+
+Exercício 5 – Restaurante VIP
+
+Um restaurante quer aplicar descontos especiais para clientes VIP e normais. Crie classes diferentes, com método abstrato para calcular o desconto, e use pytest para verificar se os descontos estão corretos.
+
+Resposta:
+
+from abc import ABC, abstractmethod
+
+class Cliente(ABC):
+    def __init__(self, nome):
+        self.nome = nome
+
+    @abstractmethod
+    def desconto(self, valor):
+        pass
+
+class VIP(Cliente):
+    def desconto(self, valor):
+        return valor * 0.8
+
+class Normal(Cliente):
+    def desconto(self, valor):
+        return valor * 0.95
+
+# Teste pytest (salvar como test_restaurante.py)
+def test_desconto():
+    vip = VIP("Ana")
+    normal = Normal("Bruno")
+    assert vip.desconto(100) == 80
+    assert normal.desconto(100) == 95

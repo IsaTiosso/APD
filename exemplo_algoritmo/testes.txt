@@ -36,6 +36,10 @@ ou para ver mais detalhes:
 pytest -v
 
 
+banana123/
+│── codigo.py
+│── test_codigo.py      ✅
+👉 Ou seja: o pytest não liga para o nome da pasta, mas sim para o padrão dos arquivos e funções.
 
 
 ### Estrutura geral de projeto com **pytest**

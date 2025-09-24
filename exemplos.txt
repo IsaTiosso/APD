@@ -1,0 +1,156 @@
+🔹 Exercício 1 – Classe Abstrata (Sistema de veículos)
+
+📖 Enunciado:
+Implemente uma classe abstrata Veiculo com o método abstrato velocidade_maxima().
+Crie as classes Carro (velocidade 180 km/h) e Moto (velocidade 120 km/h).
+Depois, instancie os objetos e exiba a velocidade máxima de cada um.
+
+
+from abc import ABC, abstractmethod
+
+class Veiculo(ABC):
+    @abstractmethod
+    def velocidade_maxima(self):
+        pass
+
+class Carro(Veiculo):
+    def velocidade_maxima(self):
+        return 180
+
+class Moto(Veiculo):
+    def velocidade_maxima(self):
+        return 120
+
+# Testando
+c = Carro()
+m = Moto()
+print("Carro:", c.velocidade_maxima(), "km/h")
+print("Moto:", m.velocidade_maxima(), "km/h")
+
+
+🔹 Exercício 2 – Decorator (Controle de acesso)
+
+📖 Enunciado:
+Crie um decorator admin_only que permita executar uma função apenas se o usuário for administrador.
+Aplique-o em uma função deletar_usuario().
+
+✅ Resposta:
+
+def admin_only(func):
+    def wrapper(usuario, *args, **kwargs):
+        if not usuario.get("admin", False):
+            print("Acesso negado! Apenas administradores.")
+            return None
+        return func(usuario, *args, **kwargs)
+    return wrapper
+
+@admin_only
+def deletar_usuario(usuario):
+    print(f"Usuário deletado por {usuario['nome']}.")
+
+# Testando
+user1 = {"nome": "Isa", "admin": True}
+user2 = {"nome": "Pedro", "admin": False}
+
+deletar_usuario(user1)  # permitido
+deletar_usuario(user2)  # negado
+
+🔹 Exercício 3 – Pytest (Função de potência)
+
+📖 Enunciado:
+Implemente uma função potencia(base, exp) que retorna base ** exp.
+Escreva 3 testes no pytest:
+
+Verificar se potencia(2, 3) == 8.
+
+Verificar se potencia(5, 0) == 1.
+
+Verificar se potencia(10, 1) == 10.
+
+✅ Resposta (test_potencia.py):
+
+def potencia(base, exp):
+    return base ** exp
+
+def test_potencia_normal():
+    assert potencia(2, 3) == 8
+
+def test_potencia_zero():
+    assert potencia(5, 0) == 1
+
+def test_potencia_um():
+    assert potencia(10, 1) == 10
+
+🔹 Exercício 4 – Classe Abstrata + Decorator (Relatórios)
+
+📖 Enunciado:
+Crie uma classe abstrata Relatorio com o método abstrato gerar().
+Implemente duas subclasses: RelatorioPDF e RelatorioExcel.
+Use um decorator log_execucao que imprime "Gerando relatório..." antes da execução e "Relatório pronto!" depois.
+
+✅ Resposta:
+
+from abc import ABC, abstractmethod
+
+def log_execucao(func):
+    def wrapper(*args, **kwargs):
+        print("Gerando relatório...")
+        resultado = func(*args, **kwargs)
+        print("Relatório pronto!")
+        return resultado
+    return wrapper
+
+class Relatorio(ABC):
+    @abstractmethod
+    def gerar(self):
+        pass
+
+class RelatorioPDF(Relatorio):
+    @log_execucao
+    def gerar(self):
+        print("Relatório em PDF gerado.")
+
+class RelatorioExcel(Relatorio):
+    @log_execucao
+    def gerar(self):
+        print("Relatório em Excel gerado.")
+
+# Testando
+pdf = RelatorioPDF()
+excel = RelatorioExcel()
+pdf.gerar()
+excel.gerar()
+
+🔹 Exercício 5 – Pytest + Erros (Validação de idade)
+
+📖 Enunciado:
+Crie uma função validar_idade(idade) que:
+
+Retorna "Maior de idade" se idade >= 18.
+
+Retorna "Menor de idade" se idade < 18.
+
+Lança ValueError se idade < 0.
+
+Escreva 3 testes no pytest.
+
+✅ Resposta (test_idade.py):
+
+def validar_idade(idade):
+    if idade < 0:
+        raise ValueError("Idade inválida")
+    return "Maior de idade" if idade >= 18 else "Menor de idade"
+
+def test_maior():
+    assert validar_idade(20) == "Maior de idade"
+
+def test_menor():
+    assert validar_idade(15) == "Menor de idade"
+
+import pytest
+def test_idade_invalida():
+    with pytest.raises(ValueError):
+        validar_idade(-5)
+
+
+
